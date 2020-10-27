@@ -15,7 +15,6 @@ public class num_1110 {
 		do {
 			counter++;
 			copy = ((copy % 10)*10) + (((copy / 10) + (copy % 10)) % 10);
-			System.out.println(copy);
 		}while(copy != input);
 		System.out.println(counter);
 		
