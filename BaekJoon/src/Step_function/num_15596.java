@@ -3,10 +3,17 @@ package Step_function;
 public class num_15596 {
 
 	public static void main(String[] args) {
-		int[] arr = {1,2,3};
-		System.out.println(sum(arr));
+		test Test = new test();
+		int[] arr = {1,2,3,4,5};
+		
+		System.out.println(Test.sum(arr));
+		
+		
 	}
-	static long sum(int[] a) {
+
+}
+class test{
+	long sum(int[] a) {
 		long sum = 0;
 		
 		for(int i = 0; i < a.length; i++) {
@@ -14,5 +21,4 @@ public class num_15596 {
 		}
 		return sum;
 	}
-
 }
