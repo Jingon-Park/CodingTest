@@ -1,5 +1,5 @@
 import java.util.*;
-class Main{
+class num_1018{
     static String startB = "BWBWBWBW";
     static String startW = "WBWBWBWB";
     public static void main(String[] args){
