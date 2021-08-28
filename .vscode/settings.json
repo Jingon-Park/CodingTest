@@ -1,6 +1,6 @@
 {
     "java.project.sourcePaths": [
-        "BaekJoon/Strp_sort/num_2750",
-        "BaekJoon/Strp_sort"
+        "BaekJoon/Strp_sort",
+        "BaekJoon/Step_sort"
     ]
 }
