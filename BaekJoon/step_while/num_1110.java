@@ -1,4 +1,4 @@
-package Step_while;
+package step_while;
 
 import java.util.Scanner;
 

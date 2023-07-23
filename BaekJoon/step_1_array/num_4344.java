@@ -1,4 +1,4 @@
-package Step_1_Array;
+package step_1_array;
 
 import java.util.Scanner;
 

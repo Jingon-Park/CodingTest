@@ -1,4 +1,4 @@
-package Step_function;
+package step_function;
 
 public class num_15596 {
 

@@ -1,17 +1,18 @@
-package Step_while;
+package step_string;
 
 import java.util.Scanner;
 
-public class num_10951 {
+public class num_10809 {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Scanner sc = new Scanner(System.in);
+		String input = sc.next();
 		
-		while(sc.hasNextInt()) {
-			System.out.println(sc.nextInt() + sc.nextInt());
+		for(char i = 'a'; i <= 'z'; i++) {
+			System.out.print(input.indexOf(i) + " ");
+
 		}
-		
 	}
 
 }

@@ -1,4 +1,4 @@
-package Step_String;
+package step_string;
 
 import java.util.Scanner;
 

@@ -1,4 +1,4 @@
-package Step_for;
+package step_for;
 
 import java.util.Scanner;
 

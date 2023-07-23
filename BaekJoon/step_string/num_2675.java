@@ -1,9 +1,9 @@
-package Step_String;
+package step_string;
 
 import java.util.Scanner;
 
 public class num_2675 {
-	//¹öÆÛ¸¦ ÀÌ¿ëÇÑ Ç®ÀÌµµ °¡´ÉÇÏ´Ù << ¼Óµµ°¡ ´õ ºü¸§
+	//ï¿½ï¿½ï¿½Û¸ï¿½ ï¿½Ì¿ï¿½ï¿½ï¿½ Ç®ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ << ï¿½Óµï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		int num = sc.nextInt();
