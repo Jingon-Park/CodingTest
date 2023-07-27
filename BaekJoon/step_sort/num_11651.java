@@ -9,17 +9,17 @@ public class num_11651 {
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
         int counter = Integer.parseInt(bf.readLine());
 
-        ArrayList<Position> input = new ArrayList<>();
+        ArrayList<Positions> input = new ArrayList<>();
 
         for(int i = 0; i < counter; i++){
             String line = bf.readLine();
             String[] parse = line.split(" ");
-            input.add(new Position(Integer.parseInt(parse[0]), Integer.parseInt(parse[1])));
+            input.add(new Positions(Integer.parseInt(parse[0]), Integer.parseInt(parse[1])));
         }
 
         Collections.sort(input);
 
-        for(Position data : input){
+        for(Positions data : input){
             System.out.println(data.getX() + " " + data.getY());
         }
 
@@ -27,7 +27,7 @@ public class num_11651 {
     }
 }
 
-class Position implements Comparable<Position>{
+class Position implements Comparable<Positions>{
     private int x;
     private int y;
 
@@ -37,7 +37,7 @@ class Position implements Comparable<Position>{
     }
 
     @Override
-    public int compareTo(Position p){
+    public int compareTo(Positions p){
         if(getY() - p.getY() == 0){
             return getX() - p.getX();
         }else{
