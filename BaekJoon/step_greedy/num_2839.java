@@ -18,22 +18,25 @@ public class num_2839 {
     }
 
     public static int minBagNum(int kiloGram) {
-        int bag_5Num = 0;
-        int minNum = Integer.MAX_VALUE;
-        boolean result = false;
+        int bagNum = 0;
+
         while (true) {
-            int tempKiloGram = kiloGram - (BAG_5 * bag_5Num);
-            if (tempKiloGram < 0) {
+            if (kiloGram % BAG_5 == 0) {
+                bagNum += kiloGram / BAG_5;
                 break;
             }
 
-            if (tempKiloGram % BAG_3 == 0) {
-                minNum = Math.min(minNum, bag_5Num + (tempKiloGram / BAG_3));
-                result = true;
+            kiloGram -= BAG_3;
+            bagNum++;
+
+            if (kiloGram < 0) {
+                bagNum = -1;
+                break;
             }
-            bag_5Num++;
+
+
         }
-        return result ? minNum : -1;
+        return bagNum;
     }
 
 }
