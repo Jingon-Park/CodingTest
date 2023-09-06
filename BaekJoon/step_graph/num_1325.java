@@ -5,59 +5,61 @@ import java.util.*;
 
 public class num_1325 {
 
-    static int computer;
-    static int input;
 
-    static ArrayList<ArrayList<Integer>> graph = new ArrayList<>();
+    public static ArrayList<Integer>[] graph;
 
-    static boolean[] checker;
+    public static int computer;
 
-    static int[] number;
+    public static int[] number;
 
-    static int MAX = Integer.MIN_VALUE;
 
-    static void initGraph() {
-        for (int i = 0; i <= computer; i++) {
-            graph.add(new ArrayList<>());
-
-        }
-    }
     public static void main(String[] args) throws IOException {
+        int MAX = 0;
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        StringTokenizer st;
 
-        st = new StringTokenizer(br.readLine());
-        computer = Integer.parseInt(st.nextToken());
-        input = Integer.parseInt(st.nextToken());
+        String[] str = br.readLine().split(" ");
+        computer = Integer.parseInt(str[0]);
+        int input = Integer.parseInt(str[1]);
 
-        number = new int[computer + 1];
-        checker = new boolean[computer + 1];
+        graph = new ArrayList[computer + 1];
 
-        initGraph();
+        for (int i = 0; i <= computer; i++) {
+            graph[i] = new ArrayList<Integer>();
+
+        }
 
         for (int i = 0; i < input; i++) {
-            st = new StringTokenizer(br.readLine());
-            int x = Integer.parseInt(st.nextToken());
-            int y = Integer.parseInt(st.nextToken());
+            String[] xy = br.readLine().split(" ");
+            int x = Integer.parseInt(xy[0]);
+            int y = Integer.parseInt(xy[1]);
 
-            graph.get(y).add(x);
+            graph[x].add(y);
+
+
 
         }
 
+        number = new int[computer + 1];
+
         for (int i = 1; i <= computer; i++) {
-            int linkedComputer = bfs(i);
-            number[i] = linkedComputer;
-            MAX = Math.max(MAX, linkedComputer);
-            checker = new boolean[computer + 1];
+            bfs(i);
         }
 
+        ArrayList<Integer> result = new ArrayList<>();
 
         for (int i = 1; i <= computer; i++) {
-            if (number[i] == MAX) {
-                bw.write(i + " ");
-
+            if (number[i] > MAX) {
+                MAX = number[i];
+                result.clear();
+                result.add(i);
+            } else if (number[i] == MAX) {
+                result.add(i);
             }
+        }
+
+        for (int num : result) {
+            bw.write(num + " ");
         }
 
         bw.flush();
@@ -66,26 +68,24 @@ public class num_1325 {
 
     }
 
-    static int bfs(int start) {
+    static void bfs(int start) {
 
-        int linkedComputerNum = 1;
+        boolean[] checker = new boolean[computer + 1];
         Queue<Integer> queue = new LinkedList();
         queue.add(start);
         checker[start] = true;
 
         while (!queue.isEmpty()) {
             int node = queue.poll();
-            List<Integer> linked = graph.get(node);
 
-            for (Integer target : linked) {
+            for (Integer target : graph[node]) {
                 if (!checker[target]) {
                     checker[target] = true;
                     queue.add(target);
-                    linkedComputerNum++;
+                    number[target]++;
                 }
             }
 
         }
-        return linkedComputerNum;
     }
 }
