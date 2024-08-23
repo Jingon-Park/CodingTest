@@ -1,5 +1,7 @@
 package step_greedy.baekjoon;
 
+import static java.util.Arrays.*;
+
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Scanner;
@@ -36,7 +38,7 @@ public class num_1931 {
 
         }
 
-        Arrays.sort(rooms, comparatorForRoomEnd);
+        sort(rooms, comparatorForRoomEnd);
 
         for (int i = 0; i < num; i++) {
             Room room = rooms[i];
