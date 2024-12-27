@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * 완전 탐색 / 모의 시험
+ */
 public class MockExam {
     static class Solution {
         public int[] solution(int[] answers) {
