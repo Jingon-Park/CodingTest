@@ -11,35 +11,23 @@ public class JoyStick {
 
         public int solution(String name) {
             // 상하 이동을 위한 최소 이동 횟수 계산
-            int totalMove = 0;
+            int upDownCounter = 0;//상하 이동 카운터
             int length = name.length();
 
-            // 각 문자에 대해 상하 이동 최소 횟수를 더함
-            for (int i = 0; i < length; i++) {
-                char targetChar = name.charAt(i);
-                int move = Math.min(targetChar - 'A', 'Z' - targetChar + 1);  // 상하 이동 최소값 계산
-                totalMove += move;
-            }
+            int leftRightCounter = length - 1;//좌우 이동 카운터 최대값
 
-            // 좌우 이동을 위한 최소 횟수 계산
-            int minLeftRightMove = length - 1;  // 최대 이동 횟수는 문자열 길이 - 1
-
-            for (int i = 0; i < length; i++) {
-                int next = i + 1;
-
-                // 'A'가 연속된 부분을 찾아 건너뛰기
-                while (next < length && name.charAt(next) == 'A') {
-                    next++;
+            for(int i = 0; i < name.length(); i++) {
+                upDownCounter += Math.min(name.charAt(i) - 'A', 26 - (name.charAt(i) - 'A')); //상,하 알파벳 맞추기
+                if (i < name.length() - 1 && name.charAt(i + 1) == 'A') {
+                    int endA = i + 1;
+                    while(endA < name.length() && name.charAt(endA) == 'A')
+                        endA++;
+                    leftRightCounter = Math.min(leftRightCounter, i * 2 + (name.length() - endA));// 오른쪽으로 갔다 다시 왼쪽으로 꺾기
+                    leftRightCounter = Math.min(leftRightCounter, i + (name.length() - endA) * 2);// 왼쪽으로 갔다 다시 오른쪽으로 꺾기
                 }
-
-                // 연속된 'A' 구간을 건너뛰는 경우의 최소 좌우 이동 횟수 계산
-                minLeftRightMove = Math.min(minLeftRightMove, 2 * i + length - next);
             }
 
-            // 최종 이동 횟수는 상하 이동과 좌우 이동의 합
-            totalMove += minLeftRightMove;
-
-            return totalMove;
+            return upDownCounter + leftRightCounter;
         }
 
     }
@@ -47,7 +35,7 @@ public class JoyStick {
     public static void main(String[] args) {
         Solution solution = new Solution();
 
-        int solution1 = solution.solution("JAN");
+        int solution1 = solution.solution("JAAXNAAAAAN");
         System.out.println(solution1);
 
     }
