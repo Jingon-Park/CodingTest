@@ -1,15 +1,12 @@
 @startuml
 package "Game Billing Service" {
-    component "API Gateway" as Gateway
-    component "Auth Service" as Auth {
-      [API 권환 확인] <<function>>
-      [게임 유저 검증]
-    }
-    component "User Service"  as User
-    component "Admin Service" as Admin
-    component "Billing Service" as Billing
-    component "Inventory Service" as Inventory
-    component "Statistics Service" as Statistics
+    component [API Gateway] as Gateway
+    component [Auth Service] as Auth
+    component [User Service]  as User
+    component [Admin Service] as Admin
+    component [Billing Service] as Billing
+    component [Inventory Service] as Inventory
+    component [Statistics Service] as Statistics
 
 }
 
@@ -17,7 +14,7 @@ package "Database Layer" {
 
   database "MySQL" as DB
   database "Redis" as Cache
-  }
+}
 
 package "Message Queue" {
     cloud "Kafka" as MQ
