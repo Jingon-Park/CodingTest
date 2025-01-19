@@ -1,0 +1,72 @@
+@startuml
+package "Game Billing Service" {
+    component "API Gateway" as Gateway
+    component "Auth Service" as Auth
+    component "User Service" as User
+    component "Admin Service" as Admin
+    component "Billing Service" as Billing
+    component "Inventory Service" as Inventory
+    component "Statistics Service" as Statistics
+}
+
+package "Database Layer" {
+    database "MySQL" as DB
+    database "Redis" as Cache
+}
+
+package "Message Queue" {
+    cloud "Kafka" as MQ
+}
+
+actor Client
+
+Client --> Gateway : Requests
+Gateway --> Auth : Authenticates
+Gateway --> User : User Actions
+Gateway --> Admin : Admin Actions
+Auth --> Gateway : Validation Response
+User --> Billing : Billing Requests
+User --> Cache : Quick Access
+User --> DB : Data Fetch
+Billing --> Inventory : Inventory Update
+Billing --> DB : Save Transactions
+Billing --> MQ : Publish Events
+Inventory --> DB : Data Update
+MQ --> Statistics : Event Processing
+@enduml
+@startuml
+node "Client" {
+    [Mobile App]
+    [Web App]
+}
+
+node "API Layer" {
+    [API Gateway]
+}
+
+node "Service Layer" {
+    [Auth Service]
+    [Billing Service]
+    [Coupon Service]
+    [Notification Service]
+    [Logging Service]
+}
+
+node "Database Layer" {
+    [MySQL]
+    [Redis]
+}
+
+cloud "Kafka" as MQ
+
+[Mobile App] --> [API Gateway] : HTTPS
+[Web App] --> [API Gateway] : HTTPS
+[API Gateway] --> [Auth Service] : REST API
+[API Gateway] --> [Billing Service] : REST API
+[Billing Service] --> [Coupon Service] : gRPC
+[Billing Service] --> [Kafka] : Publish
+[Billing Service] --> [MySQL] : SQL Insert
+[Billing Service] --> [Redis] : Cache Query
+[Kafka] --> [Notification Service] : Subscribe
+[Logging Service] --> [MySQL] : Insert Logs
+@enduml

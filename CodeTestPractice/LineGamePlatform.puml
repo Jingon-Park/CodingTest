@@ -1,0 +1,42 @@
+@startuml
+package "Game Billing Service" {
+    component "API Gateway" as Gateway
+    component "Auth Service" as Auth {
+      [API 권환 확인] <<function>>
+      [게임 유저 검증]
+    }
+    component "User Service"  as User
+    component "Admin Service" as Admin
+    component "Billing Service" as Billing
+    component "Inventory Service" as Inventory
+    component "Statistics Service" as Statistics
+
+}
+
+package "Database Layer" {
+
+  database "MySQL" as DB
+  database "Redis" as Cache
+  }
+
+package "Message Queue" {
+    cloud "Kafka" as MQ
+}
+
+
+actor Client
+
+Client --> Gateway : Requests
+Gateway --> Auth : Authenticates
+Gateway --> User : User Actions
+Gateway --> Admin : Admin Actions
+Auth --> Gateway : Validation Response
+User --> Billing : Billing Requests
+User --> Cache : Quick Access
+User --> DB : Data Fetch
+Billing --> Inventory : Inventory Update
+Billing --> DB : Save Transactions
+Billing --> MQ : Publish Events
+Inventory --> DB : Data Update
+MQ --> Statistics : Event Processing
+@enduml

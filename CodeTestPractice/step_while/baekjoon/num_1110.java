@@ -7,7 +7,7 @@ public class num_1110 {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Scanner sc = new Scanner(System.in);
-		
+
 		int input = sc.nextInt();
 		int copy = input;
 		int counter = 0;
