@@ -1,5 +1,6 @@
 package step_graph.programmers;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -9,49 +10,45 @@ public class WordsChange {
         Queue<String> queue = new LinkedList<>();
         boolean[] visited;
         public int solution(String begin, String target, String[] words) {
+            if (!Arrays.asList(words).contains(target)) {
+                return 0;
+            }
+
             int answer = 0;
 
             visited = new boolean[words.length];
-
-            for (int i = 0; i < words.length; i++) {
-                if (checkLinked(begin, words[i])) {
-                    queue.add(words[i]);
-                    visited[i] = true;
-                }
-            }
+            queue.add(begin);
 
             while (!queue.isEmpty()) {
-                answer++;
-                int repeatCounter = queue.size();
-
-                for (int i = 0; i < repeatCounter; i++) {
-                    String compareString = queue.poll();
-                    if (compareString.equals(target)) {
+                int repeatSize = queue.size();
+                for (int i = 0; i < repeatSize; i++) {
+                    String currentString = queue.poll();
+                    if (currentString.equals(target)) {
                         return answer;
                     }
 
                     for (int j = 0; j < words.length; j++) {
-                        if (checkLinked(compareString, words[j]) && !visited[j]) {
-                            queue.add(words[j]);
+                        if (checkLinked(currentString, words[j]) && !visited[j]) {
                             visited[j] = true;
+                            queue.add(words[j]);
                         }
                     }
                 }
+                answer++;
             }
 
             return 0;
         }
 
         public boolean checkLinked(String first, String second) {
-            int counter = 0;
+            int diff = 0;//first와  second의 다른 문자 갯수
 
             for (int i = 0; i < first.length(); i++) {
-                char target = first.charAt(i);
-                char compare = second.charAt(i);
-                if (target != compare) {
-                    counter++;
+                if (first.charAt(i) != second.charAt(i)) {
+                    diff++;
                 }
-                if (counter > 1) {
+
+                if (diff > 1) {
                     return false;
                 }
             }
