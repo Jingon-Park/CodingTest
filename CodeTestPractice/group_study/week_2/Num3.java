@@ -1,35 +1,33 @@
 package group_study.week_2;
 
+import java.util.Arrays;
+
 public class Num3 {
 
     static class Solution {
         public int solution(int[] diffs, int[] times, long limit) {
-            int answer = 1;
             long remainLimit = limit - times[0];
+            int max = Arrays.stream(diffs).max().getAsInt();
+            int min = 1;
 
+            int level = 1;
 
-            while (true) {
-                long price = 0L;
+            while (min != max) {
+                long tempLimit = remainLimit;
+                level = (min + max) / 2;
+
                 for (int i = 1; i < diffs.length; i++) {
-                    price += getPrice(i, diffs, times, answer);
-//                    System.out.println(i + " 번째 : " + price + " remain = " + (remainLimit - price));
-                    if (price > remainLimit) {
-//                        System.out.println("Fail");
-                        while (!(price < remainLimit)) {
-                            long tempPrice = 0L;
-                            answer++;
-                            for (int j = 1; j <= i; j++) {
-                                tempPrice += getPrice(j, diffs, times, answer);
-                            }
-//                            System.out.println("Lv = " + answer);
-                            price = tempPrice;
-                        }
-                    }
+                    int price = getPrice(i, diffs,times, level);
+                    tempLimit -= price;
                 }
-                break;
+                if (tempLimit < 0) {
+                    min = level + 1;
+                } else {
+                    max = level;
+                }
             }
 
-            return answer;
+            return max;
         }
 
         public int getPrice(int index, int[] diffs, int[] times, int lv) {
@@ -37,7 +35,7 @@ public class Num3 {
                 return -1;
             }
             if (diffs[index] <= lv) {
-                return diffs[index];
+                return times[index];
             }
             return (times[index - 1] + times[index]) * (diffs[index] - lv) + times[index];
         }
