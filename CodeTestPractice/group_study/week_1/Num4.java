@@ -30,17 +30,6 @@ public class Num4 {
             }
         }
 
-        public int bfs(int count, int k, int[][] dungeons) {
-            Queue<Integer> order = new LinkedList<>();
-
-            for ()
-            while (!order.isEmpty()) {
-
-            }
-
-            return count;
-        }
-
     }
 
     public static void main(String[] args) {

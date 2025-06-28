@@ -11,7 +11,6 @@ import java.util.Comparator;
  *
  */
 public class Num1 {
-d
     static class Solution {
 
         public int solution(int[][] info, int n, int m) {
