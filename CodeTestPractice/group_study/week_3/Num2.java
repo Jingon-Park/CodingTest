@@ -1,7 +1,7 @@
 package group_study.week_3;
 
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Num2 {
     static class Solution {
@@ -13,8 +13,6 @@ public class Num2 {
         int sizeX;
         int sizeY;
         int[][] searchLand;
-        Queue<Integer> pX = new LinkedList<>();
-        Queue<Integer> pY = new LinkedList<>();
         int counter = 0;
 
         public int solution(int[][] land) {
@@ -36,63 +34,72 @@ public class Num2 {
 
             for (int[] ints : searchLand) {
                 for (int anInt : ints) {
-                    System.out.print( anInt + " ");
+                    System.out.print(anInt + " ");
                 }
                 System.out.println("");
             }
 
-            for (int i = 0; i < sizeY; i++) {
-                int counter = 0;
+            for (int x = 0; x < sizeY; x++) {
+                int sum = 0;
                 boolean check = true;
-                for (int j = 0; j < sizeX; j++) {
-                    if (searchLand[j][i] > 0 && check) {
-                        counter += searchLand[j][i];
+                for (int y = 0; y < sizeX; y++) {
+                    if (searchLand[y][x] > 0 && check) {
+                        sum += searchLand[y][x];
                         check = false;
                     }
-
-                    if (searchLand[j][i] == 0) {
+                    if (searchLand[y][x] == 0) {
                         check = true;
                     }
                 }
-                answer = Math.max(counter, answer);
+                answer = Math.max(answer, sum);
             }
+
 
             return answer;
         }
 
-        public int bfs(int x, int y, int[][] land) {
+        public void bfs(int x, int y, int[][] land) {
 
+            List<Integer> listX = new ArrayList<>();
+            List<Integer> listY = new ArrayList<>();
+            int index = 0;
             visited[x][y] = true;
-            pX.add(x);
-            pY.add(y);
+            listX.add(x);
+            listY.add(y);
             counter++;
 
 
-            while (!pX.isEmpty() && !pY.isEmpty()) {
-                int currentX = pX.poll();
-                int currentY = pY.poll();
+            while (listX.size() > index) {
+                int currentX = listX.get(index);
+                int currentY = listY.get(index);
+                index++;
 
                 for (int i = 0; i < mX.length; i++) {
                     int moveX = currentX + mX[i];
                     int moveY = currentY + mY[i];
                     if (moveX >= 0 && moveX < sizeX && moveY >= 0 && moveY < sizeY) {
                         if (land[moveX][moveY] == 1 && !visited[moveX][moveY]) {
-                            pX.add(moveX);
-                            pY.add(moveY);
-                            counter = bfs(moveX, moveY, land);
+                            listX.add(moveX);
+                            listY.add(moveY);
+                            visited[moveX][moveY] = true;
+                            counter++;
                         }
                     }
                 }
             }
-            searchLand[x][y] = counter;
-            return counter;
+            for (int i = 0; i < index; i++) {
+                searchLand[listX.get(i)][listY.get(i)] = counter;
+            }
         }
     }
 
     public static void main(String[] args) {
 
-        int[][] land = {{0, 0, 0, 1, 1, 1, 0, 0}, {0, 0, 0, 0, 1, 1, 0, 0},
-            {1, 1, 0, 0, 0, 1, 1, 0}, {1, 1, 1, 0, 0, 0, 0, 0}, {1, 1, 1, 0, 0, 0, 1, 1}};
+//        int[][] land = {{0, 0, 0, 1, 1, 1, 0, 0}, {0, 0, 0, 0, 1, 1, 0, 0},
+//            {1, 1, 0, 0, 0, 1, 1, 0}, {1, 1, 1, 0, 0, 0, 0, 0}, {1, 1, 1, 0, 0, 0, 1, 1}};
+//
+        int[][] land = {{1, 0, 1, 0, 1, 1}, {1, 0, 1, 0, 0, 0}, {1, 0, 1, 0, 0, 1},
+            {1, 0, 0, 1, 0, 0}, {1, 0, 0, 1, 0, 1}, {1, 0, 0, 0, 0, 0}, {1, 1, 1, 1, 1, 1}};
 
         Solution solution = new Solution();
 
