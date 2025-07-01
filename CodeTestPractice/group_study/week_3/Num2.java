@@ -1,7 +1,9 @@
 package group_study.week_3;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Num2 {
     static class Solution {
@@ -15,44 +17,29 @@ public class Num2 {
         int[][] searchLand;
         int counter = 0;
 
+        int[] oil;
+
         public int solution(int[][] land) {
             int answer = 0;
-            sizeX = land.length;
-            sizeY = land[0].length;
+            sizeY = land.length;
+            sizeX = land[0].length;
 
-            searchLand = new int[sizeX][sizeY];
-            visited = new boolean[sizeX][sizeY];
+            searchLand = new int[sizeY][sizeX];
+            visited = new boolean[sizeY][sizeX];
+            oil = new int[sizeX];
 
-            for (int i = 0; i < sizeX; i++) {
-                for (int j = 0; j < sizeY; j++) {
-                    if (land[i][j] == 1 && !visited[i][j]) {
-                        bfs(i, j, land);
+            for (int x = 0; x < sizeX; x++) {
+                for (int y = 0; y < sizeY; y++) {
+                    if (land[y][x] == 1 && !visited[y][x]) {
+                        bfs(x, y, land);
                     }
                     counter = 0;
                 }
             }
-
-            for (int[] ints : searchLand) {
-                for (int anInt : ints) {
-                    System.out.print(anInt + " ");
-                }
-                System.out.println("");
+            for (int i : oil) {
+                answer = Math.max(answer, i);
             }
 
-            for (int x = 0; x < sizeY; x++) {
-                int sum = 0;
-                boolean check = true;
-                for (int y = 0; y < sizeX; y++) {
-                    if (searchLand[y][x] > 0 && check) {
-                        sum += searchLand[y][x];
-                        check = false;
-                    }
-                    if (searchLand[y][x] == 0) {
-                        check = true;
-                    }
-                }
-                answer = Math.max(answer, sum);
-            }
 
 
             return answer;
@@ -63,32 +50,37 @@ public class Num2 {
             List<Integer> listX = new ArrayList<>();
             List<Integer> listY = new ArrayList<>();
             int index = 0;
-            visited[x][y] = true;
+            visited[y][x] = true;
             listX.add(x);
             listY.add(y);
             counter++;
-
+            Set<Integer> line = new HashSet<>();
 
             while (listX.size() > index) {
                 int currentX = listX.get(index);
                 int currentY = listY.get(index);
                 index++;
+                line.add(currentX);
 
                 for (int i = 0; i < mX.length; i++) {
                     int moveX = currentX + mX[i];
                     int moveY = currentY + mY[i];
                     if (moveX >= 0 && moveX < sizeX && moveY >= 0 && moveY < sizeY) {
-                        if (land[moveX][moveY] == 1 && !visited[moveX][moveY]) {
+                        if (land[moveY][moveX] == 1 && !visited[moveY][moveX]) {
                             listX.add(moveX);
                             listY.add(moveY);
-                            visited[moveX][moveY] = true;
+                            visited[moveY][moveX] = true;
                             counter++;
                         }
                     }
                 }
             }
             for (int i = 0; i < index; i++) {
-                searchLand[listX.get(i)][listY.get(i)] = counter;
+                searchLand[listY.get(i)][listX.get(i)] = counter;
+            }
+
+            for (Integer integer : line) {
+                oil[integer] += counter;
             }
         }
     }
