@@ -3,6 +3,7 @@ package group_study.week_4;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
@@ -11,7 +12,7 @@ public class Num4 {
         public String[] solution(String[][] plans) {
             List<String> answerList = new ArrayList<>();
 
-            List<Plan> planList = new ArrayList<>();
+            LinkedList<Plan> planList = new LinkedList<>();
             Stack<Plan> stopPlans = new Stack<>();
 
             for (String[] plan : plans) {
@@ -32,33 +33,22 @@ public class Num4 {
                 }
             });
 
-            for (int i = 0; i < plans.length; i++) {
-                Plan plan = planList.get(i);
-                if (i + 1 < plans.length) {
-                    Plan nextPlan = planList.get(i + 1);
-                    if (plan.startTime + plan.remainTime <= nextPlan.startTime) {
-                        answerList.add(plan.name);
-                        int currentTime = plan.startTime + plan.remainTime;
-                        if (!stopPlans.isEmpty()) {
-                            while (currentTime < nextPlan.startTime && !stopPlans.isEmpty()) {
-                                Plan stopedPlan = stopPlans.pop();
-                                if (currentTime + stopedPlan.remainTime <= nextPlan.startTime) {
-                                    answerList.add(stopedPlan.name);
-                                    currentTime += stopedPlan.remainTime;
-                                } else {
-                                    stopedPlan.remainTime =
-                                        stopedPlan.remainTime - (nextPlan.startTime - currentTime);
-                                    stopPlans.push(stopedPlan);
-                                }
-                            }
-                        }
-                    } else {
-                        plan.remainTime = plan.remainTime - (nextPlan.startTime - plan.startTime);
-                        stopPlans.push(plan);
+            int currentTime = 0;
+
+            for (Plan plan : planList) {
+                while (!stopPlans.isEmpty()) {
+                    Plan target = stopPlans.pop();
+                    if (currentTime + target.remainTime <= plan.startTime) {
+                        answerList.add(target.name);
+                        currentTime += target.remainTime;
+                    }else {
+                        target.remainTime -= (plan.startTime - currentTime);
+                        stopPlans.push(target);
+                        break;
                     }
-                } else {
-                    answerList.add(plan.name);
                 }
+                currentTime = plan.startTime;
+                stopPlans.push(plan);
             }
 
             while (!stopPlans.isEmpty()) {
