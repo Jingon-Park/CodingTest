@@ -1,6 +1,5 @@
 package group_study.week_5;
 
-import group_study.week_5.Num3.Solution;
 
 public class Num2 {
     static class Solution {
@@ -16,17 +15,19 @@ public class Num2 {
         public int getTwoPointLengthPow(int startX, int startY, int ballX, int ballY) {
             int lengthX = Math.abs(ballX - startX);
             int lengthY = Math.abs(ballY - startY);
-            return lengthX * lengthX + lengthY * lengthY;
+
+            int result = lengthX * lengthX + lengthY * lengthY;
+            return result;
         }
 
         public int calculate(int m, int n, int startX, int startY, int ballX, int ballY) {
 
             int result = Integer.MAX_VALUE;
             //좌측 대칭이동
-            if (startY == ballY && startX < ballX) {
+            if (startY == ballY && startX > ballX) {
 
             }else {
-                int leftX = startX * -2;
+                int leftX = startX * -1;
                 int leftY = startY;
                 result = Math.min(result, getTwoPointLengthPow(leftX, leftY, ballX, ballY));
             }
@@ -51,11 +52,11 @@ public class Num2 {
             }
 
             //하측 대칭이동
-            if (startX == ballX && startX > ballY) {
+            if (startX == ballX && startY > ballY) {
 
             }else {
                 int downX = startX;
-                int downY = startY * -2;
+                int downY = startY * -1;
                 result = Math.min(result, getTwoPointLengthPow(downX, downY, ballX, ballY));
             }
 
@@ -73,7 +74,10 @@ public class Num2 {
 
         int[] solution1 = solution.solution(m, n, startX, startY, balls);
 
-        System.out.println(solution1);
+        for (int i : solution1) {
+            System.out.print(i +",");
+        }
+
     }
 
 }
