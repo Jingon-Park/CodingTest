@@ -34,52 +34,50 @@ public class Num1 {
                 return 0;
             }
 
-            for (int[][] ints : checker) {
-                boolean check = true;
-                for (int[] anInt : ints) {
-                    int x = anInt[0];
-                    int y = anInt[1];
-                    char c = board[x].charAt(y);
-                    if (c != 'X') {
-                        check = false;
-                    }
-                }
-                if (check) {
-                    xWin = true;
-                }
-            }
+            oWin = winnerChecker('O', board);
+            xWin = winnerChecker('X', board);
 
-            for (int[][] ints : checker) {
-                boolean check = true;
-                for (int[] anInt : ints) {
-                    int x = anInt[0];
-                    int y = anInt[1];
-                    char c = board[x].charAt(y);
-                    if (c != 'O') {
-                        check = false;
-                    }
-                }
-                if (check) {
-                    oWin = true;
-                }
-            }
-
+            //승자가 둘 인경우
             if (xWin && oWin) {
                 return 0;
             }
 
+            //X가 승자이고, X와 O의 사용 갯수가 같은 경우
             if (xWin && !oWin && xRemain == oRemain) {
                 return 1;
             }
 
+            //O가 승자이고, O의 갯수가 더 많은 경우
             if (oWin && !xWin && oRemain > xRemain) {
                 return 1;
             }
+
+            //승자가 없는 경우
             if (!oWin && !xWin) {
                 return 1;
             }
 
             return answer;
+        }
+
+        public boolean winnerChecker(char target, String[] board) {
+
+            for (int[][] ints : checker) {
+                boolean check = true;
+                for (int[] anInt : ints) {
+                    int x = anInt[0];
+                    int y = anInt[1];
+                    char c = board[x].charAt(y);
+                    if (c != target) {
+                        check = false;
+                    }
+                }
+                if (check) {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
     public static void main(String[] args) {
