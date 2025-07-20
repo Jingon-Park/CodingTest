@@ -7,52 +7,34 @@ public class Num3 {
 
     static class Solution {
         public long solution(int[] sequence) {
-            //
-            long answer = 0;
 
-            LinkedList<Integer> plusQ = new LinkedList<>();
-            LinkedList<Integer> minusQ = new LinkedList<>();
-            long pSumMax = 0;
-            long mSumMax = 0;
-            long pSum = 0;
-            long mSum = 0;
+            int[] plusSq = new int[sequence.length];
+            int[] minusSq = new int[sequence.length];
 
             for (int i = 0; i < sequence.length; i++) {
-                int target = sequence[i];
-                long pTemp = pSum;
-                long mTemp = mSum;
-
                 if (i % 2 == 0) {
-                    plusQ.add(target);
-                    minusQ.add(target * -1);
+                    plusSq[i] = sequence[i];
+                    minusSq[i] = sequence[i] * -1;
                 }else {
-                    plusQ.add(target * -1);
-                    minusQ.add(target);
+                    plusSq[i] = sequence[i] * -1;
+                    minusSq[i] = sequence[i];
                 }
-                pSum += plusQ.getLast();
-                mSum += minusQ.getLast();
-
-                pSumMax = Math.max(pSumMax, pSum);
-                mSumMax = Math.max(mSumMax, mSum);
-
-                int pFirst = plusQ.getFirst();
-                int mFirst = minusQ.getFirst();
-                if (pSum - pFirst > pSum) {
-                    pSum -= pFirst;
-                    plusQ.removeFirst();
-                    pSumMax = Math.max(pSumMax, pSum);
-                }
-                if (mSum - mFirst > mSum) {
-                    mSum -= mFirst;
-                    minusQ.removeFirst();
-                    mSumMax = Math.max(mSumMax, mSum);
-                }
-
-
             }
 
+            long pSqMax = Integer.MIN_VALUE;
+            long mSqMax = Integer.MIN_VALUE;
+            long pSum = 0;
+            long mSum = 0;
+            for (int i = 0; i < sequence.length; i++) {
 
-            return Math.max(mSumMax, pSumMax);
+                pSum = Math.max(plusSq[i], pSum + plusSq[i]);
+                mSum = Math.max(minusSq[i], mSum + minusSq[i]);
+
+                pSqMax = Math.max(pSqMax, pSum);
+                mSqMax = Math.max(mSqMax, mSum);
+
+            }
+            return Math.max(pSqMax, mSqMax);
         }
     }
     public static void main(String[] args) {
