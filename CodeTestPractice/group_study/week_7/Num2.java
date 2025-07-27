@@ -6,65 +6,52 @@ import java.util.Queue;
 public class Num2 {
 
     static class Solution {
-
-//        static int[] mX = {-1, 0, 0, 1};
-//        static int[] mY = {0, -1, 1, 0};
-
         static int[] moveN = {1, 0, 0, -1};
         static int[] moveM = {0, -1, 1, 0};
+        static char[] appendList = {'d', 'l', 'r', 'u'};
+        static StringBuilder sb = new StringBuilder();
 
         static int nSize;
         static int mSize;
 
         public String solution(int n, int m, int x, int y, int r, int c, int k) {
-            String answer = "";
             nSize = n;
             mSize = m;
 
-            return bfs(x, y, r, c, 0, k);
+            int minDist = Math.abs(x - r) + Math.abs(y - c);
+            if (minDist > k || (k - minDist) % 2 != 0) return "impossible";
 
+            return dfs(x, y, r,c, k) ? sb.toString() : "impossible";
         }
 
-        public String bfs(int x, int y, int r, int c, int lv, int k) {
+        public boolean dfs(int x, int y, int r, int c, int k) {
 
-            Queue<String[]> queue = new LinkedList<>();
-
-            queue.add(new String[]{Integer.toString(x), Integer.toString(y), Integer.toString(lv), ""});
-
-            while (!queue.isEmpty()) {
-                String[] current = queue.poll();
-                int currentLv = Integer.parseInt(current[2]);
-
-                if (currentLv <= k) {
-                    int currentX = Integer.parseInt(current[0]);
-                    int currentY = Integer.parseInt(current[1]);
-                    if (currentLv == k && currentX == r && currentY == c) {
-                        return current[3];
-                    }
-
-                    for (int i = 0; i < 4; i++) {
-                        int nextX = Integer.parseInt(current[0]) + moveN[i];
-                        int nextY = Integer.parseInt(current[1]) + moveM[i];
-                        if (nextX > 0 && nextX <= nSize && nextY > 0 && nextY <= mSize) {
-                            String addString;
-                            if (i == 0) {
-                                addString = "d";
-                            } else if (i == 1) {
-                                addString = "l";
-                            } else if (i == 2) {
-                                addString = "r";
-                            } else {
-                                addString = "u";
-                            }
-                            queue.add(new String[]{Integer.toString(nextX), Integer.toString(nextY),
-                                Integer.toString(Integer.parseInt(current[2]) + 1),
-                                current[3] + addString});
-                        }
-                    }
-                }
+            if (sb.length() == k && x == r && y == c) {
+                return true;
             }
 
-            return "impossible";
+            int remainLength = Math.abs(r - x) + Math.abs(c - y);
+
+            if (remainLength > k - sb.length()) {
+                return false;
+            }
+
+
+            for (int i = 0; i < 4; i++) {
+                int nextX = x + moveN[i];
+                int nextY = y + moveM[i];
+
+                if (nextX < 1 || nextX > nSize || nextY < 1 || nextY > mSize) {
+                    continue;
+                }
+                sb.append(appendList[i]);
+                boolean result = dfs(nextX, nextY, r, c, k);
+                if (result) {
+                    return true;
+                }
+                sb.deleteCharAt(sb.length() - 1);
+            }
+            return false;
         }
     }
 
