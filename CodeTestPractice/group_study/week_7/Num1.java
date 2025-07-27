@@ -7,63 +7,86 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
-public class Num1 {
+class Num1 {
+
+
     static class Solution {
 
-        static Map<Integer, Set<Integer>> map = new HashMap<>();
-        static boolean[] visited;
+
+
         public int[] solution(int n, int[][] roads, int[] sources, int destination) {
+
+            Map<Integer, Set<Integer>> roadMap = initRoadMap(roads);
+
+            int[] minLengths = getMinLengthsFrom(destination, roadMap, n);
+
             int[] answer = new int[sources.length];
 
-            visited = new boolean[n + 1];
-
-            for (int[] road : roads) {
-                int start = road[0];
-                int end = road[1];
-                Set<Integer> linkedRoad = map.getOrDefault(start, new HashSet<>());
-                linkedRoad.add(end);
-                map.put(start, linkedRoad);
-
-                Set<Integer> endLinkedRoad = map.getOrDefault(end, new HashSet<>());
-                endLinkedRoad.add(start);
-                map.put(end, endLinkedRoad);
-            }
-
             for (int i = 0; i < sources.length; i++) {
-                int source = sources[i];
-                int result = bfs(source, destination);
-                visited = new boolean[n + 1];
-                answer[i] = result;
+                answer[i] = minLengths[sources[i]] == Integer.MAX_VALUE ? -1 : minLengths[sources[i]];
             }
 
             return answer;
         }
 
-        public int bfs(int current, int destination) {
+        private Map<Integer, Set<Integer>> initRoadMap(int[][] roads) {
+            Map<Integer, Set<Integer>> roadMap = new HashMap<>();
 
-            visited[current] = true;
+            for (int[] road : roads) {
+                int leftSite = road[0];
+                int rightSite = road[1];
+
+                Set<Integer> leftLinkedSite = roadMap.getOrDefault(leftSite, new HashSet<>());
+                leftLinkedSite.add(rightSite);
+                roadMap.put(leftSite, leftLinkedSite);
+
+                Set<Integer> rightLinkedSite = roadMap.getOrDefault(rightSite, new HashSet<>());
+                rightLinkedSite.add(leftSite);
+                roadMap.put(rightSite, rightLinkedSite);
+            }
+
+            return roadMap;
+        }
+
+        private int[] getMinLengthsFrom(int start, Map<Integer, Set<Integer>> roadMap, int nodeSize) {
+
+            boolean[] visited = new boolean[nodeSize + 1];
+            int[] minLengths = new int[nodeSize + 1];
+
+            for (int i = 0; i < minLengths.length; i++) {
+                minLengths[i] = Integer.MAX_VALUE;
+            }
 
             Queue<int[]> queue = new LinkedList<>();
-            queue.add(new int[]{current, 0});
+            Set<Integer> linkedFromDestination = roadMap.get(start);
+
+            minLengths[start] = 0;
+
+            linkedFromDestination.iterator().forEachRemaining(site -> {
+                if (!visited[site]) {
+                    queue.add(new int[]{site, 1});
+                    visited[site] = true;
+                }
+            });
 
             while (!queue.isEmpty()) {
-                int[] currentPosition = queue.poll();
+                int[] site = queue.poll();
+                minLengths[site[0]] = Math.min(minLengths[site[0]], site[1]);
+                Set<Integer> linkedSite = roadMap.get(site[0]);
 
-                if (currentPosition[0] == destination) {
-                    return currentPosition[1];
-                }
-
-                Set<Integer> linkedRoads = map.getOrDefault(currentPosition[0], new HashSet<>());
-                linkedRoads.iterator().forEachRemaining(site -> {
-                    if (!visited[site]) {
-                        queue.add(new int[]{site, currentPosition[1] + 1});
-                        visited[site] = true;
+                linkedSite.iterator().forEachRemaining(nextSite -> {
+                    if (!visited[nextSite]) {
+                        queue.add(new int[]{nextSite, site[1] + 1});
+                        visited[nextSite] = true;
                     }
                 });
             }
-            return -1;
+
+            return minLengths;
         }
     }
+
+
     public static void main(String[] args) {
 //        int n = 3;
 //        int[][] roads = {{1, 2}, {2, 3}};
