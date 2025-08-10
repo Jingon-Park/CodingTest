@@ -5,11 +5,11 @@ public class Num1 {
 
         public long solution(int a, int b, int[] g, int[] s, int[] w, int[] t) {
             long low = 0l;
-            long high = 100000000000L;
+            long high = (long)(10e9 * 10e5);
             long answer = 0L;
 
             while (high > low) {
-                long mid = (high + low) >>> 1;
+                long mid = (high + low) / 2;
 
                 if (checker(a, b, g, s, w, t, mid)) {
                     answer = mid;
