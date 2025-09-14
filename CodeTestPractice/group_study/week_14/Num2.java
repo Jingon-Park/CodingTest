@@ -25,7 +25,7 @@ public class Num2 {
             }
         }
 
-        int[][] dp = new int[num][num];
+        long[][] dp = new long[num][num];
         dp[0][0] = 1;
 
         for (int x = 0; x < num; x++) {
