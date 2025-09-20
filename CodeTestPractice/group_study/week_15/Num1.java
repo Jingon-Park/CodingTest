@@ -5,6 +5,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 
+/**
+ * 상자 넣기
+ * https://www.acmicpc.net/problem/1965
+ */
 public class Num1 {
 
     public static void main(String[] args) throws IOException {
