@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.Stack;
 
 public class Num1 {
 
@@ -21,34 +20,26 @@ public class Num1 {
             boxs[i] = Integer.parseInt(input[i]);
         }
 
-        Stack<int[]> stack = new Stack<>();
+        int[] dp = new int[num];
 
-        for (int i = 0; i < boxs.length; i++) {
-            int target = boxs[i];
+        Arrays.fill(dp, 1);
 
-            int largeBox =(int) Arrays.stream(boxs).skip(i).filter(value -> value > target).count();
+        if (dp.length == 1) {
+            System.out.println("1");
+            return;
+        }
 
-            if (stack.isEmpty()) {
-                stack.add(new int[]{target,largeBox});
-                continue;
-            }
-
-            while (!stack.isEmpty()) {
-                int[] before = stack.peek();
-
-                if (target > before[0]) {
-                    stack.add(new int[]{target, largeBox});
-                    break;
+        for (int i = 1; i < num; i++) {
+            int j = i - 1;
+            while (j >= 0) {
+                if (boxs[i] > boxs[j]) {
+                    dp[i] = Math.max(dp[j] + 1, dp[i]);
                 }
-
-                if (largeBox < before[1]) {
-                    continue;
-                }
-                stack.pop();
+                j--;
             }
         }
 
-        System.out.println(stack.size());
+        Arrays.sort(dp);
+        System.out.println(dp[num - 1]);
     }
-
 }
